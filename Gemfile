@@ -17,7 +17,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'rspec-rails'
+
 
 #require 'rspec-rails'
 
@@ -38,7 +38,8 @@ gem 'rspec-rails'
 #  gem 'turn', :require => false
 #end
 group :development do
-
+  gem 'annotate'
+  gem 'rspec-rails'
 end
 
 group :test do
