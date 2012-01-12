@@ -17,6 +17,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'gravatar_image_tag'
 
 
 #require 'rspec-rails'
@@ -44,6 +45,7 @@ end
 
 group :test do
   gem 'webrat', '0.7.1'
+  gem 'factory_girl_rails'
 end
 group :production do
   # gems specifically for Heroku go here
