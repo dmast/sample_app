@@ -6,6 +6,46 @@ describe UsersController do
     @user = User.find(params[:id])
   end
 
+  describe "GET 'index'" do
+    describe "for non-signed in users" do
+      it "should deny access" do
+        get :index
+        response.should redirect_to(signin_path)
+        flash[:notice].should =~ /sign in/i
+
+      end
+    end
+
+    describe "for signed-in users" do
+      before(:each) do
+        @user = test_sign_in(Factory(:user))
+        second = Factory(:user, :name => "Bob", :email =>"another2@example.com")
+        third = Factory(:user, :name => "Ben", :email => "another3@example.com")
+
+        @users = [@user, second, third]
+
+      end
+
+      it "should be successful" do
+        get :index
+        response.should be_success
+      end
+
+      it "should have the right title" do
+        get :index
+        response.should have_selector("title", :content => "All users")
+      end
+
+      it "should have an element for each user" do
+        get :index
+        @users.each do |user|
+          response.should have_selector("li", :content =>user.name)
+        end
+      end
+    end
+
+  end
+
   describe "Get 'new'" do
     it "should be successful" do
       get 'new'
@@ -173,15 +213,18 @@ describe UsersController do
     describe "success" do
 
       before(:each) do
-        @attr = { :name => "New Name", :email => "user@example.org",
+        @attr = { :name => "New Name2", :email => "user@example2.org",
                   :password => "barbaz", :password_confirmation => "barbaz" }
       end
 
       it "should change the user's attributes" do
         put :update, :id => @user, :user => @attr
+        user = assigns(:user)
         @user.reload
         @user.name.should  == @attr[:name]
         @user.email.should == @attr[:email]
+        @user.encrypted_password.should ==  user.encrypted_password
+
       end
 
       it "should redirect to the user show page" do

@@ -11,5 +11,12 @@ describe "FriendlyForwarding" do
     click_button
     # The test follows the redirect again, this time to users/edit.
     response.should render_template('users/edit')
+
+    visit signout_path
+    visit signin_path
+    fill_in :email,    :with => user.email
+    fill_in :password, :with => user.password
+    click_button
+    response.should render_template('users/show')
   end
 end
