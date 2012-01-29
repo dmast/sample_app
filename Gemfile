@@ -18,6 +18,7 @@ end
 
 gem 'jquery-rails'
 gem 'gravatar_image_tag'
+gem 'will_paginate'
 
 
 #require 'rspec-rails'

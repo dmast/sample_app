@@ -28,7 +28,7 @@ describe "LayoutLinks" do
     describe "when not signed in" do
       it "should have a signin link" do
         visit root_path
-        response.should have_selector("a", :href => signin_path, :content => "Sign In")
+        response.should have_selector("a", :href => signin_path, :content => "Sign in")
       end
 
     end
@@ -36,7 +36,7 @@ describe "LayoutLinks" do
     describe "when signed in" do
       before(:each) do
         @user = Factory(:user)
-        integration_sign_in(user)
+        integration_sign_in(@user)
       end
 
       it "should have a signin link" do
