@@ -94,6 +94,15 @@ describe UsersController do
       @user = Factory(:user)
     end
 
+    it "should show the user's microposts" do
+      mp1 = Factory(:micropost, :user => @user, :content => "Foo Bar")
+      mp2 = Factory(:micropost, :user =>@user, :content =>"Baz quux")
+      get :show, :id =>@user
+      response.should have_selector("span.content", :content => mp1.content)
+      response.should have_selector("span.content", :content => mp2.content)
+
+    end
+
     it "should be successful" do
       get :show, :id => @user
       response.should be_success
@@ -200,7 +209,7 @@ describe UsersController do
   describe "PUT 'update'" do
 
     before(:each) do
-      @user = Factory(:user)
+      @user = Factory(:user, :email => Factory.next(:email))
       test_sign_in(@user)
     end
 
@@ -259,12 +268,12 @@ describe UsersController do
 
         it "should deny access to 'edit'" do
           get :edit, :id => @user
-          #response.should redirect_to(signin_path)
+            #response.should redirect_to(signin_path)
         end
 
         it "should deny access to 'update'" do
           put :update, :id => @user, :user => {}
-          #response.should redirect_to(signin_path)
+            #response.should redirect_to(signin_path)
         end
       end
 
@@ -291,7 +300,7 @@ describe UsersController do
 
     describe "DELETE 'destroy'" do
       before(:each) do
-        @user = Factory(:user)
+        @user = Factory(:user, :email => Factory.next(:email))
 
       end
 
